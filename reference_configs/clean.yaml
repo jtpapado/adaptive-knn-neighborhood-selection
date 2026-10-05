@@ -1,0 +1,77 @@
+# Written by run_experiments.sh on 2026-09-02 22:03:10
+base_folder: "datasets"
+output_folder: "results"
+per_dataset_results: true
+
+noise:
+  enabled: false
+  rates: [0.3]
+  seed: 42
+  run_clean: true
+
+datasets:
+  include: ["iris", "ecl", "bl", "pm", "ys", "bn", "ph", "txr", "ls", "tn", "pd", "mgt", "lir"]
+  exclude: []
+
+models: ["CustomKNN", "MutualKNN", "SymmetricKNN"]
+
+backend: "gpu"
+timing: "gpu"
+gpu_max_elements: 250000000
+
+# One design for every phase: same folds, same scaler, so methods scored in
+# different phases remain directly comparable.
+cv:
+  folds: 10
+  repeats: 1
+  bestk_folds: 10
+  bestk_repeats: 1
+  seed: 42
+  scaling: "minmax"
+  rare_class_policy: "warn"
+
+phases:
+  phase1:  true      # fixed k = 5
+  phase2:  false
+  phase3:  false
+  phase4:  true      # nested best-k and tuned-w
+  phase5:  true      # derive AdaNN neighbourhoods, k_max 9 and 30
+  phase6:  true      # score them
+  phase7:  false
+  phase8:  false
+  phase9:  false
+  phase10: false
+  phase11: true      # Friedman across datasets
+  phase12: true      # Wilcoxon pairs
+  phase13: true      # timing report
+
+phase1:
+  k_values: [5]
+
+phase2:
+  k_min: 1
+  k_max: 30
+  cv_folds: 10
+  tie_breaking: "lowest_k"
+
+phase4:
+  outer_folds: 10
+  inner_folds: 10
+  repeats: 1
+  seed: 42
+  rare_class_policy: "warn"
+  methods: ["bestk", "lastk_tuned"]
+  w_values: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  fixed_k: [5]
+
+phase5:
+  k_max_values: [9, 30]
+
+phase9:
+  k_max: 30
+  stability_windows: [3]
+
+workers:
+  main: -1
+  builders: 1
+  testers: 10

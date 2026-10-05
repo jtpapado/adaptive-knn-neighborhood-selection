@@ -1,0 +1,30 @@
+# run outputs: every workspace the drivers create
+workspace*/
+srv_*/
+sens*/
+lsv_*/
+ls_*/
+ws_*/
+results/
+logs/
+partials/
+adaptive_k*/
+*.log
+*.xlsx
+*.csv
+*.png
+
+# noisy dataset copies the pipeline writes beside the originals
+datasets_noise*/
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# editor / os
+.vscode/
+.idea/
+.DS_Store
+*:Zone.Identifier

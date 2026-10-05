@@ -1,0 +1,12 @@
+# Versions reported in the paper (Section 6.2), under Python 3.10.12.
+numpy==2.2.6
+scipy==1.15.3
+scikit-learn==1.7.2
+torch==2.14.0
+
+# Also required. The paper does not pin these, so no version is asserted here;
+# any recent release works. pandas needs openpyxl to write the .xlsx results.
+pandas
+openpyxl
+pyyaml
+matplotlib
